@@ -33,13 +33,11 @@ fs.readdir(directory, function(err, files) {
 });
 
 function addPath(file) {
-  var path = __dirname + '/' + directory + file;
-  return path;
+  return __dirname + '/' + directory + file;
 }
 
 function isPhoto(file) {
-  if (file.slice(-4).toLowerCase() === '.jpg');
-  return true;
+  return (file.slice(-4).toLowerCase() === '.jpg') ? true : false;
 }
 
 function removeMultipleDots(file) {
@@ -70,7 +68,7 @@ function timeStampToBeginning(file) {
     if (match === null) {
       match = /\d+/.exec(file);
     }
-    // Jos leima löytyy muualta kuin tiedostonimen alusta, poistetaan se tiedostonimestä
+    // Jos leima löytyy muualta kuin tiedostonimen alusta, poistetaan se tiedostonimestä ja liitetään alkuun
     if (match.index !== 0) {
       file = file.substring(0, match.index);
       file = match[0] + '_' + file + '.' + array[array.length - 1];
