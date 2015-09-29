@@ -6,6 +6,10 @@
 'use strict';
 
 var fs = require('fs');
+var prompt = require('prompt');
+
+var properties = [
+];
 var directory = process.argv[2];
 
 if (! directory) {
@@ -18,6 +22,9 @@ fs.readdir(directory, function(err, files) {
   files.forEach(function(d) {
     var oldName = addPath(d);
     if (isPhoto(d)) {
+      if (hasNoName(d)) {
+        d = promptForName(d);
+      }
       d = removeMultipleDots(d);
       d = removeSpaces(d);
       d = extensionToLowerCase(d);
@@ -31,6 +38,16 @@ fs.readdir(directory, function(err, files) {
     }
   });
 });
+
+function promptForName(file) {
+  console.log("Want to append an address to the filename \'" + file + "\'? (y/n)");
+  prompt.start();
+  prompt.get()
+}
+
+function hasNoName(file) {
+  return /P\d+\./i.test(file);
+}
 
 function addPath(file) {
   return __dirname + '/' + directory + file;
