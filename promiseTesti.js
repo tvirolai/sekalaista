@@ -3,12 +3,17 @@
   'use strict';
 
   if (typeof define === 'function' && define.amd) {
-    define(['underscore', 'fs', 'q'], factory);
+    define(['underscore', 'fs', 'q', 'readline'], factory);
   } else if (typeof exports === 'object') {
-    module.exports = factory(require('underscore'), require('fs'), require('q'));
+    module.exports = factory(require('underscore'), require('fs'), require('q'), require('readline'));
   }
 
-}(this, function (_, fs, Q) {
+}(this, function (_, fs, Q, readline) {
+
+  var rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
 
   console.log("yeah");
   Q.nfcall(fs.readFile, 'testi.txt', 'utf-8')
@@ -27,9 +32,16 @@
   });
 
   var rf = Q.denodeify(fs.readFile);
-  rf('01-09-header.cpp', 'utf-8')
+  
+  rf('testi.txt', 'utf-8')
   .then(function(data) {
     console.log(data);
-  }).done();
-
+  })
+  .then(function() {
+    rl.question('Miltäs nyt tuntuu? ', function(vastaus) {
+      console.log('Jaa, ei kiinnosta jos on \'' + vastaus.toLowerCase() + '\'.');
+      rl.close();
+    });
+  })
+  .done();
 }));
