@@ -8,12 +8,12 @@
   'use strict';
 
   if (typeof define === 'function' && define.amd) { // jshint ignore: line
-    define(['underscore', 'fs', 'q', 'walk'], factory); // jshint ignore: line
+    define(['underscore', 'fs', 'walk'], factory); // jshint ignore: line
   } else if (typeof exports === 'object') {
-    module.exports = factory(require('underscore'), require('fs'), require('q'), require('walk'));
+    module.exports = factory(require('underscore'), require('fs'), require('walk'));
   }
 
-}(this, function (_, fs, Q, walk) {
+}(this, function (_, fs, walk) {
 
   'use strict';
   
@@ -51,18 +51,17 @@
   });
 
   function readAndStream(array) {
-    var file = array.pop();
-    ++processedFiles;
-    fs.readFile(file, 'utf-8', function(err, data) {
-      wstream.write(data);
-      progressReport();
-      if (array.length === 0) {
-        wstream.end();
-      }
-      else {
+    if (array.length === 0) {
+      console.log('Ready.');
+    } else {
+      var file = array.pop();
+      ++processedFiles;
+      fs.readFile(file, 'utf-8', function(err, data) {
+        wstream.write(data);
+        progressReport();
         readAndStream(array);
-      }
-    });
+      });
+    }
   }
 
   function progressReport() {
