@@ -13,10 +13,6 @@ var destFile = '/home/tuomo/Työpöytä/Melinda-dumppi/data.seq';
 
 function download(urls) {
   var url = urls.pop();
-  if (fileExists(destFile)) {
-    fs.unlink(destFile);
-    console.log('Removed existing file.');
-  }
   var options = {flags: 'a' };
   var file = fs.createWriteStream(destFile, options);
   console.log('Downloading file ' + url + '.');
@@ -50,4 +46,12 @@ function fileExists(filePath) {
   }
 }
 
+function checkAndRemove(destFile) {
+  if (fileExists(destFile)) {
+    fs.unlink(destFile);
+    console.log('Removed existing file.');
+  }
+}
+
+checkAndRemove(destFile);
 download(getUrls());
