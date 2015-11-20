@@ -5,26 +5,21 @@
 
 var request = require('request');
 var cheerio = require('cheerio');
-var readline = require('readline');
 
 var fs = require('fs');
 var _ = require('underscore');
 
 var out = fs.createWriteStream('YKL-luokat_avattu.txt');
 
-var counts = {};
-var definitions = {};
 var codeArray = [];
 
 fs.readFile('YKL-luokat.txt', 'utf-8', function (err, data) {
   var splitData = data.split('\n');
   splitData.forEach(function (line) {
-    var amount = line.trim().split(' ')[0];
     var code = line.trim().split(' ')[1];
-    counts[code] = amount;
     codeArray.push(code);
   });
-  codeArray = _.filter(codeArray, function (item) { return /[0-9]/.test(item); })
+  codeArray = _.filter(codeArray, function (item) { return /[0-9]/.test(item); });
   getAndWriteDefinition(codeArray.reverse());
 });
 
