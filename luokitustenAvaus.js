@@ -46,7 +46,7 @@ function getDefition(field) {
       if (extra) {
         result += '\t' + returnDefinition(definition) + '\t' + getClass(extra);
       } else {
-        result += definition;
+        result += '\t' + returnDefinition(definition);
       }
       console.log(result);
       out.write(result + '\n');
